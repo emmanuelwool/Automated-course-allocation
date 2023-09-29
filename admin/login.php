@@ -7,7 +7,7 @@ if(isset($_POST['login']))
   {
     $username=$_POST['username'];
     $password=md5($_POST['password']);
-    $sql ="SELECT ID FROM tbladmin WHERE UserName=:username and Password=:password";
+    $sql ="SELECT ID,user_role FROM tbladmin WHERE UserName=:username and Password=:password";
     $query=$dbh->prepare($sql);
     $query-> bindParam(':username', $username, PDO::PARAM_STR);
 $query-> bindParam(':password', $password, PDO::PARAM_STR);
@@ -17,6 +17,8 @@ $query-> bindParam(':password', $password, PDO::PARAM_STR);
 {
 foreach ($results as $result) {
 $_SESSION['tsasaid']=$result->ID;
+//echo "<script> alert('$result->user_role') </script>";
+//echo "<script> alert('$result->ID') </script>";
 }
 
   if(!empty($_POST["remember"])) {
@@ -33,11 +35,15 @@ setcookie ("userpassword","");
       }
 }
 $_SESSION['login']=$_POST['username'];
+if($result->user_role=="admin"){
 echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
-} else{
+} else if($result->user_role=="user"){
+    echo "<script type='text/javascript'> document.location ='lecturer.php'; </script>"; 
+}else{
 echo "<script>alert('Invalid Details');</script>";
 }
 }
+  }
 
 ?>
 <!DOCTYPE html>

@@ -16,6 +16,9 @@ $mobnum=$_POST['mobnum'];
 $email=$_POST['email'];
 $gender=$_POST['gender'];
 $dob=$_POST['dob'];
+$uname=$_POST['uname'];
+$pword=$_POST['pword'];
+$pwd=md5($pword);
 
 $cid=$_POST['cid'];
 $religion=$_POST['religion'];
@@ -56,6 +59,9 @@ $query->bindParam(':religion',$religion,PDO::PARAM_STR);
 $query->bindParam(':address',$address,PDO::PARAM_STR);
 $query->bindParam(':propic',$propic,PDO::PARAM_STR);
  $query->execute();
+
+ $sql1=$dbh->prepare("INSERT INTO tbladmin(AdminName,UserName,MobileNumber,Email,Password)VALUES(?,?,?,?,?)");
+ $sql1->execute([$fname." ".$lname, $uname,$mobnum,$email,$pwd]);
 
    $LastInsertId=$dbh->lastInsertId();
    if ($LastInsertId>0) {
@@ -234,6 +240,25 @@ foreach($results as $row)
                                         <div class="form-group">
                                             <label>Address</label>
                                             <input type="text"  class="form-control border-none input-flat bg-ash" rows="4" cols="4" required="true" name="address">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="basic-form">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input type="text"  class="form-control border-none input-flat bg-ash" rows="4" cols="4" required="true" name="uname">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="basic-form">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password"  class="form-control border-none input-flat bg-ash" rows="4" cols="4" required="true" name="pword">
                                         </div>
                                     </div>
                                 </div>
